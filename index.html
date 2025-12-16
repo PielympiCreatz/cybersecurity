@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cybersecurity & Digital Forensics</title>
+  <style>
+    /* Reset */
+    * {
+      box-sizing: border-box;
+      margin: 0; padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    body {
+      background: linear-gradient(135deg, #0d0c1d 0%, #1a1a2e 100%);
+      color: #e0e0e0;
+      display: flex;
+      min-height: 100vh;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .login-container {
+      background-color: #111018;
+      border: 2px solid #2a2a5e;
+      border-radius: 10px;
+      width: 320px;
+      padding: 30px;
+      box-shadow: 0 0 20px #2a2a5e;
+    }
+    .login-container h1 {
+      text-align: center;
+      margin-bottom: 25px;
+      font-size: 1.8rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #9f9fff;
+      text-shadow:
+        0 0 5px #9f9fff,
+        0 0 10px #9f9fff,
+        0 0 20px #5c5cff;
+    }
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      color: #bfbfff;
+      letter-spacing: 0.5px;
+    }
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 10px 12px;
+      margin-bottom: 20px;
+      border: 1px solid #383875;
+      border-radius: 5px;
+      background-color: #1a1a2e;
+      color: #c9c9ff;
+      font-size: 1rem;
+      transition: border-color 0.3s;
+    }
+    input[type="text"]:focus,
+    input[type="password"]:focus {
+      outline: none;
+      border-color: #5c5cff;
+      box-shadow: 0 0 8px #5c5cff;
+      background-color: #222240;
+    }
+    button {
+      width: 100%;
+      padding: 12px 0;
+      background-color: #3a3ab8;
+      border: none;
+      border-radius: 5px;
+      color: #e0e0ff;
+      font-weight: 700;
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      cursor: pointer;
+      box-shadow: 0 0 12px #5c5cff;
+      transition: background-color 0.3s;
+    }
+    button:hover, button:focus {
+      background-color: #5858f0;
+      box-shadow: 0 0 18px #8b8bff;
+      outline: none;
+    }
+    .footer-text {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 0.8rem;
+      color: #7070b0;
+      user-select: none;
+      letter-spacing: 1px;
+    }
+    .footer-text span {
+      color: #9090ff;
+      font-weight: 700;
+    }
+    /* Dashboard styles */
+    .dashboard {
+      animation: fadeIn 0.6s ease forwards;
+    }
+    .dashboard h1 {
+      font-size: 2rem;
+      color: #8ab4f8;
+      margin-bottom: 10px;
+    }
+    .dashboard p {
+      font-size: 1rem;
+      margin-bottom: 25px;
+      line-height: 1.3;
+      color: #c0c7ff;
+      text-align: center;
+    }
+    section {
+      background: #19193a;
+      padding: 20px;
+      border-radius: 8px;
+      border: 1px solid #4343a9;
+      box-shadow: 0 0 12px #5c5cff85;
+      margin-bottom: 20px;
+    }
+    section h2 {
+      margin-bottom: 15px;
+      color: #a3a8ff;
+      letter-spacing: 1.5px;
+      border-bottom: 1px solid #5c5cff;
+      padding-bottom: 5px;
+      text-transform: uppercase;
+      font-weight: 700;
+    }
+    ul {
+      list-style: none;
+      margin-bottom: 20px;
+      color: #d0d4ff;
+      padding-left: 18px;
+    }
+    ul li {
+      margin-bottom: 8px;
+      position: relative;
+      padding-left: 18px;
+      cursor: default;
+      user-select: none;
+    }
+    ul li::before {
+      content: '•';
+      color: #6f74ff;
+      position: absolute;
+      left: 0;
+      top: 0;
+      transform: scale(1.5);
+      line-height: 1;
+    }
+    .button-group {
+      display: flex;
+      gap: 12px;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+    .dash-btn {
+      flex: 1 1 calc(50% - 6px);
+      background: linear-gradient(135deg, #6a75ff, #3a3ab8);
+      box-shadow: 0 0 15px #7279ff;
+      border-radius: 6px;
+      color: #e0e0ff;
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 12px 0;
+      cursor: pointer;
+      transition: background-color 0.4s ease, box-shadow 0.4s ease;
+      text-align: center;
+      user-select: none;
+      border: 1px solid transparent;
+    }
+    .dash-btn:hover, .dash-btn:focus {
+      background: linear-gradient(135deg, #9a9fff, #5858f0);
+      box-shadow: 0 0 22px #a0a8ff;
+      outline: none;
+      border-color: #abaee8;
+    }
+    .modal-backdrop {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(10,10,35,0.85);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 999;
+      backdrop-filter: blur(4px);
+    }
+    .modal {
+      background: #222244;
+      border-radius: 8px;
+      box-shadow: 0 0 22px #6769ffcc;
+      padding: 25px 30px;
+      width: 90%;
+      max-width: 450px;
+      color: #e0e0ff;
+      position: relative;
+      animation: slideDownFade 0.4s ease forwards;
+    }
+    .modal h3 {
+      margin-bottom: 15px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      font-weight: 700;
+      color: #9a9aff;
+    }
+    .modal p {
+      margin-bottom: 20px;
+      line-height: 1.3;
+      color: #c3c7ff;
+    }
+    .modal button.close-btn {
+      position: absolute;
+      top: 10px; right: 10px;
+      background: transparent;
+      border: none;
+      color: #c9c9ff;
+      font-size: 1.3rem;
+      cursor: pointer;
+      font-weight: 700;
+      user-select: none;
+      transition: color 0.3s;
+    }
+    .modal button.close-btn:hover, .modal button.close-btn:focus {
+      color: #ff6f6f;
+      outline: none;
+    }
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(10px);}
+      to {opacity:1; transform: translateY(0);}
+    }
+    @keyframes slideDownFade {
+      from {opacity: 0; transform: translateY(-20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+  </style>
+</head>
+<body>
+  <main role="main" class="login-container" aria-label="Spooky Government Login Form">
+    <h1>Cybersecurity & Digital Forensics</h1>
+    <form onsubmit="return handleLogin(event)" novalidate>
+      <label for="username">Username</label>
+      <input 
+        type="text" 
+        id="username" 
+        name="username" 
+        autocomplete="username" 
+        required 
+        aria-required="true" 
+        aria-describedby="userHelp" 
+        placeholder="Enter ID" 
+        spellcheck="false"
+      />
+      <label for="password">Password</label>
+      <input 
+        type="password" 
+        id="password" 
+        name="password" 
+        autocomplete="current-password" 
+        required 
+        aria-required="true" 
+        placeholder="Enter Secure Password"
+      />
+      <button type="submit" aria-label="Authenticate">
+        Access Terminal
+      </button>
+    </form>
+    <p id="loginStatus" role="alert" aria-live="polite" style="margin-top:15px; color:#ff7070; display:none;"></p>
+    <p class="footer-text">Authorized Personnel Only — <span>Top Secret Clearance Required</span></p>
+  </main>
+
+  <script>
+  function handleLogin(event) {
+    event.preventDefault();
+    const user = event.target.username.value.trim();
+    const pass = event.target.password.value;
+
+    const statusEl = document.getElementById('loginStatus');
+    statusEl.style.display = 'none';
+    statusEl.textContent = '';
+
+    const validUsers = {
+      'agent47': 'shadowX9!',
+      'phantom': 'ghost#42',
+      'nightowl': 'moonlit2024'
+    };
+
+    if (user in validUsers && validUsers[user] === pass) {
+      showHomePage(user);
+    } else {
+      statusEl.textContent = 'Access denied. Invalid credentials.';
+      statusEl.style.display = 'block';
+    }
+
+    return false;
+  }
+
+  function showHomePage(user) {
+    const main = document.querySelector('main.login-container');
+    main.innerHTML = `
+      <div class="dashboard" role="region" aria-live="polite" aria-label="User Dashboard">
+        <h1>Welcome, ${user}!</h1>
+        <p>You have successfully logged in to the Cybersecurity & Digital Forensics terminal.</p>
+        <section aria-labelledby="dashboardTitle">
+          <h2 id="dashboardTitle">Dashboard</h2>
+          <ul>
+            <li>Access classified info</li>
+            <li>Manage your profile</li>
+            <li>Review mission data</li>
+          </ul>
+          <div class="button-group" role="group" aria-label="Dashboard actions">
+            <button class="dash-btn" onclick="openAboutSection('Mission')">About Mission</button>
+            <button class="dash-btn" onclick="openAboutSection('Team')">About Team</button>
+            <button class="dash-btn" onclick="openAboutSection('History')">About History</button>
+            <button class="dash-btn" onclick="openIncidentReport()">Incident Report</button>
+            <button class="dash-btn" onclick="openResearchLogs()">Research Logs</button>
+          </div>
+          <button onclick="location.reload()" style="margin-top:15px;">Log out</button>
+        </section>
+      </div>
+    `;
+  }
+
+  // Modal utility
+  function createModal(contentHTML) {
+    // Create backdrop
+    const backdrop = document.createElement('div');
+    backdrop.className = 'modal-backdrop';
+    // Disable background scroll
+    document.body.style.overflow = 'hidden';
+
+    // Modal container
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.tabIndex = -1;
+
+    // Close button
+    const closeBtn = document.createElement('button');
+    closeBtn.className = 'close-btn';
+    closeBtn.setAttribute('aria-label', 'Close modal');
+    closeBtn.innerHTML = '&times;';
+    closeBtn.onclick = () => {
+      document.body.removeChild(backdrop);
+      document.body.style.overflow = '';
+    };
+
+    modal.innerHTML = contentHTML;
+    modal.prepend(closeBtn);
+    backdrop.appendChild(modal);
+    document.body.appendChild(backdrop);
+
+    // Focus management - trap focus inside modal
+    modal.focus();
+
+    backdrop.addEventListener('click', (e) => {
+      if (e.target === backdrop) {
+        closeBtn.click();
+      }
+    });
+  }
+
+  function openAboutSection(topic) {
+    const content = {
+      'Mission': `
+        <h3>About the Mission</h3>
+        <p>Cybersecurity and digital forensics focus on protecting digital systems and investigating cyber incidents. The primary goal of these fields is to prevent unauthorized access, protect sensitive data, and ensure the integrity of digital information. Cybersecurity works to defend systems against threats such as hacking, malware, and data breaches, while digital forensics is used to examine digital evidence after an incident has occurred.</p>
+      `,
+      'Team': `
+        <h3>About the Team</h3>
+        <p>Cybersecurity and digital forensics rely on interdisciplinary teams with specialized roles. These teams often include security analysts, forensic investigators, system administrators, and researchers. Each role contributes to identifying vulnerabilities, responding to incidents, analyzing digital evidence, and documenting findings. Collaboration is essential to ensure accurate investigations and effective system protection.</p>
+      `,
+      'History': `
+        <h3>About Our History</h3>
+        <p>The need for cybersecurity and digital forensics emerged alongside the growth of computers and networked systems. Early cyber incidents highlighted weaknesses in digital security, leading to the development of protective measures such as encryption and access controls. As cybercrime became more advanced, digital forensics evolved to provide structured methods for collecting, preserving, and analyzing digital evidence. Today, both fields are critical in addressing modern cyber threats across government, corporate, and legal environments.</p>
+      `
+    }
+    createModal(content[topic] || '<p>Information not available.</p>');
+  }
+
+  function openIncidentReport() {
+    const content = `
+      <h3>Incident Report</h3>
+      <p>Please submit any suspicious activity or incidents immediately through secured channels. Currently, this is a demo interface.</p>
+      <form id="incidentForm" aria-label="Incident Report Form">
+        <label for="incidentDesc">Description:</label><br/>
+        <textarea id="incidentDesc" name="incidentDesc" rows="4" style="width:100%; border-radius: 4px; border:1px solid #5c5cff; background:#222240; color:#e0e0ff; resize:none;" required></textarea><br/><br/>
+        <button type="submit" style="width: 45%;">Submit</button>
+        <button type="button" style="width: 45%; margin-left: 10%; background: #777777;" onclick="document.querySelector('.close-btn').click()">Cancel</button>
+      </form>
+    `;
+    createModal(content);
+
+    const form = document.getElementById('incidentForm');
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const desc = document.getElementById('incidentDesc').value.trim();
+      if (desc.length === 0) return;
+
+      alert('Incident report submitted. Thank you.');
+      document.querySelector('.close-btn').click();
+    });
+  }
+
+  function openResearchLogs() {
+    // Open new page with fake reports
+    window.open('reports.html', '_blank');
+  }
+  </script>
+</body>
+</html>
